@@ -1,7 +1,7 @@
 {
    "abstract" : "DBIx::Class::InflateColumn::Serializer::CompressJSON - JSON compressed Inflator",
    "author" : [
-      "Baptiste FOSSÉ <baptiste@weborama.com>"
+      "Baptiste Fosse <baptiste@weborama.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
@@ -35,11 +35,12 @@
          }
       }
    },
-   "release_status" : "stable",
-   "resources" : {
-      "repository" : {
-         "url" : "http://git.in.weborama.fr"
+   "provides" : {
+      "DBIx::Class::InflateColumn::Serializer::CompressJSON" : {
+         "file" : "lib/DBIx/Class/InflateColumn/Serializer/CompressJSON.pm",
+         "version" : "0.001"
       }
    },
+   "release_status" : "stable",
    "version" : "0.001"
 }
