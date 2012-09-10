@@ -23,14 +23,14 @@ sub get_freezer{
   if (defined $info->{'size'}){
       my $size = $info->{'size'};
       return sub {
-        my $b = Compress::Zlib::compress(JSON::to_json(shift));
+        my $b = compress(JSON::to_json(shift));
         croak "could not get a compressed binary" unless ( defined $b);
         croak "serialization too big" if (length($b) > $size);
         return $b;
       };
   } else {
       return sub {
-        my $b = Compress::Zlib::compress(JSON::to_json(shift));
+        my $b = compress(JSON::to_json(shift));
         croak "could not get a compressed binary" unless ( defined $b);
         return $b;
       };
@@ -39,7 +39,7 @@ sub get_freezer{
 
 sub get_unfreezer {
   return sub {
-    my $j = Compress::Zlib::uncompressed(shift);
+    my $j = uncompress(shift);
     croak "could not get an uncompressed scalar" unless defined( $j );
     return JSON::from_json($j);
   };
@@ -61,7 +61,7 @@ version 0.001
 
 =head1 NAME
 
-DBIx::Class::InflateColumn::Serializer::JSON - JSON Inflator
+DBIx::Class::InflateColumn::Serializer::JSON - CompressJSON Inflator
 =head1 SYNOPSIS
 
   package MySchema::Table;
@@ -72,7 +72,7 @@ DBIx::Class::InflateColumn::Serializer::JSON - JSON Inflator
         'data_column' => {
             'data_type' => 'VARCHAR',
             'size'      => 255,
-            'serializer_class'   => 'JSON'
+            'serializer_class'   => 'CompressJSON'
         }
      );
 
