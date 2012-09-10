@@ -17,7 +17,7 @@ my %module_build_args = (
     "Baptiste Fosse <baptiste\@weborama.com>"
   ],
   "dist_name" => "DBIx-Class-InflateColumn-Serializer-CompressJSON",
-  "dist_version" => "0.001",
+  "dist_version" => "0.002",
   "license" => "restrictive",
   "module_name" => "DBIx::Class::InflateColumn::Serializer::CompressJSON",
   "recommends" => {},
