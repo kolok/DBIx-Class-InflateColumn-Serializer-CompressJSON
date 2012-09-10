@@ -16,7 +16,7 @@ name: DBIx-Class-InflateColumn-Serializer-CompressJSON
 provides:
   DBIx::Class::InflateColumn::Serializer::CompressJSON:
     file: lib/DBIx/Class/InflateColumn/Serializer/CompressJSON.pm
-    version: 0.001
+    version: 0.002
 requires:
   Carp: 0
   Compress::Zlib: 0
