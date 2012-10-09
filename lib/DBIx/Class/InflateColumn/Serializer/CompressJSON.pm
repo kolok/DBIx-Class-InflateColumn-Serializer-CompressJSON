@@ -23,14 +23,16 @@ sub get_freezer{
   if (defined $info->{'size'}){
       my $size = $info->{'size'};
       return sub {
-        my $b = compress(JSON::to_json(shift));
+        my $json = JSON::to_json(shift);
+        my $b = pack('L',length($json)).compress($json);
         croak "could not get a compressed binary" unless ( defined $b);
         croak "serialization too big" if (length($b) > $size);
         return $b;
       };
   } else {
       return sub {
-        my $b = compress(JSON::to_json(shift));
+        my $json = JSON::to_json(shift);
+        my $b = pack('L',length($json)).compress($json);
         croak "could not get a compressed binary" unless ( defined $b);
         return $b;
       };
@@ -39,7 +41,7 @@ sub get_freezer{
 
 sub get_unfreezer {
   return sub {
-    my $j = uncompress(shift);
+    my $j = uncompress(substr(shift,4));
     croak "could not get an uncompressed scalar" unless defined( $j );
     return JSON::from_json($j);
   };
