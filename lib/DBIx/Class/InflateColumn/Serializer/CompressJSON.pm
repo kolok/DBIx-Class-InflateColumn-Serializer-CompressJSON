@@ -46,6 +46,8 @@ sub get_freezer {
 }
 
 sub get_unfreezer {
+    my ( $class, $column, $info, $args ) = @_;
+
     my $compress_method = $info->{compress_method} || 'zlib';
 
     return sub {

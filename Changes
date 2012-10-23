@@ -1,5 +1,7 @@
 Revision history for DBIx-Class-InflateColumn-Serializer-CompressJSON
 
-0.01    Date/time
+0.01    20120928/163000
         First version, released on an unsuspecting world.
 
+0.02    20121023/170200
+        Add test for compression JSON
