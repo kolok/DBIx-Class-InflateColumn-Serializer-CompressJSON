@@ -1,5 +1,7 @@
 Build
-DBIx-Class-InflateColumn-Serializer-CompressJSON-0.001.tar.gz
+DBIx-Class-InflateColumn-Serializer-CompressJSON-*
+Makefile
+pm_to_blib
 _build/
 blib/
 
