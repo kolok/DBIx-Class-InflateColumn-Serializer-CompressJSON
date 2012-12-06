@@ -11,7 +11,7 @@ use DBICTest;
 
 my $schema = DBICTest->init_schema();
 
-plan tests => 9;
+plan tests => 12;
 
 my $struct_hash = {
     b => 1,
@@ -30,14 +30,14 @@ my $struct_array = [
     'e',
 ];
 
-my $rs = $schema->resultset("SerializeJSON");
+my $rs = $schema->resultset("SerializeCompressJSON");
 my ($stored, $inflated);
 
 $stored = $rs->create({ 
   'testtable_id' => 2
 });
 
-ok($stored->update({ 'serial1' => $struct_hash, 'serial2' => $struct_array }), 'deflation');
+ok($stored->update({ 'serial1' => $struct_hash, 'serial2' => $struct_array , 'serial3' => $struct_hash, 'serial4' => $struct_array }), 'deflation');
 
 #retrieve what was serialized from DB
 undef $stored;
@@ -48,27 +48,23 @@ is_deeply($inflated, $struct_hash, 'the stored hash and the orginial are equal')
 ok($inflated = $stored->serial2, 'arrayref inflation');
 is_deeply($inflated, $struct_array, 'the stored array and the orginial are equal');
 
+ok($inflated = $stored->serial3, 'hashref inflation with zlib option');
+is_deeply($inflated, $struct_hash, 'the stored hash and the orginial are equal with zlib option');
+ok($inflated = $stored->serial4, 'arrayref inflation with mysql option');
+is_deeply($inflated, $struct_array, 'the stored array and the orginial are equal with mysql option');
+
 throws_ok(sub {
-  $stored->update({ 'serial1' => { 'bigkey' => 'n' x 1024 }
-                  });
-}, qr/serialization too big/, 'Serialize result bigger than size of column');
+        $stored->update({ 'serial1' => { 'bigkey' => 'n' x 1000000 }
+            });
+    }, qr/serialization too big/, 'Serialize result bigger than size of column');
 
 
-ok($stored->update({ 'serial2' => { 'bigkey' => 'n' x 1024 }
+ok($stored->update({ 'serial2' => { 'bigkey' => 'n' x 1000000 }
                    })
 ,'storing a serialization too big for a column without size');
 
 undef $stored;
 $stored = $rs->find({'testtable_id' => 2});
-
-TODO: {
-  local $TODO = 'sqlite doesn\'t truncate TEXT fields...';
-
-  throws_ok(sub {
-    $inflated = $stored->serial2
-  }, qr/unexpected end of string/, 'the serialization is truncated, but at least we get an exception');
-
-};
 
 $stored->update({ 'serial1' => undef });
 

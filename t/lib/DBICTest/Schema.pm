@@ -14,6 +14,7 @@ no warnings qw/qw/;
 __PACKAGE__->load_classes(qw/
   SerializeStorable
   SerializeJSON
+  SerializeCompressJSON
   SerializeYAML
   /);
 

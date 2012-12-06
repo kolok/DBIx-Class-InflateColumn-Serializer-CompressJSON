@@ -17,32 +17,55 @@ use JSON qw//;
 use Compress::Zlib qw/compress uncompress/;
 use Carp;
 
-sub get_freezer{
-  my ($class, $column, $info, $args) = @_;
+sub get_freezer {
+    my ( $class, $column, $info, $args ) = @_;
 
-  if (defined $info->{'size'}){
-      my $size = $info->{'size'};
-      return sub {
-        my $b = compress(JSON::to_json(shift));
-        croak "could not get a compressed binary" unless ( defined $b);
-        croak "serialization too big" if (length($b) > $size);
+    my $size = $info->{'size'};
+    my $compress_method = $info->{compress_method} || 'zlib';
+
+    return sub {
+        my $b;
+
+        if ( $compress_method eq 'zlib' ) {
+            $b = compress( JSON::to_json(shift) );
+        }
+        elsif ( $compress_method eq 'mysql' ) {
+            my $json = JSON::to_json(shift);
+            $b = pack( 'L', length($json) ) . compress($json);
+        }
+        else {
+            croak "Unknown compress method: '$compress_method'";
+        }
+
+        # check for known errors
+        croak "could not get a compressed binary" unless defined $b;
+        croak "serialization too big"
+          if defined $size && ( length($b) > $size );
         return $b;
-      };
-  } else {
-      return sub {
-        my $b = compress(JSON::to_json(shift));
-        croak "could not get a compressed binary" unless ( defined $b);
-        return $b;
-      };
-  }
+    };
 }
 
 sub get_unfreezer {
-  return sub {
-    my $j = uncompress(shift);
-    croak "could not get an uncompressed scalar" unless defined( $j );
-    return JSON::from_json($j);
-  };
+    my ( $class, $column, $info, $args ) = @_;
+
+    my $compress_method = $info->{compress_method} || 'zlib';
+
+    return sub {
+        my $j;
+    
+        if ($compress_method eq 'zlib') {
+            $j = uncompress(shift);
+        }
+        elsif ( $compress_method eq 'mysql' ) {
+            $j = uncompress(substr(shift,4));
+        }
+        else {
+            croak "Unknown compress method: '$compress_method'";
+        }
+        
+        croak "could not get an uncompressed scalar" unless defined( $j );
+        return JSON::from_json($j);
+    };
 }
 
 
