@@ -4,4 +4,4 @@ Makefile
 pm_to_blib
 _build/
 blib/
-
+MYMETA.*
