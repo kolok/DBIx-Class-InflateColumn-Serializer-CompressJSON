@@ -3,7 +3,7 @@ abstract: 'DBIx::Class::InflateColumn::Serializer::CompressJSON - JSON compresse
 author:
   - 'Baptiste Fosse <baptiste@weborama.com>'
 build_requires:
-  ExtUtils::MakeMaker: 0
+  DBIx::Class::InflateColumn::Serializer: 0
 configure_requires:
   Module::Build: 0.3601
 dynamic_config: 0
@@ -18,5 +18,10 @@ provides:
     file: lib/DBIx/Class/InflateColumn/Serializer/CompressJSON.pm
     version: 0.002
 requires:
-  Test::More: 0
+  Carp: 0
+  Compress::Zlib: 0
+  DBIx::Class::InflateColumn::Serializer: 0
+  JSON: 0
+  strict: 0
+  warnings: 0
 version: 0.001

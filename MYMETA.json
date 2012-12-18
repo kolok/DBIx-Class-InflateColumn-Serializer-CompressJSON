@@ -16,7 +16,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "0"
+            "DBIx::Class::InflateColumn::Serializer" : "0"
          }
       },
       "configure" : {
@@ -26,7 +26,12 @@
       },
       "runtime" : {
          "requires" : {
-            "Test::More" : "0"
+            "Carp" : "0",
+            "Compress::Zlib" : "0",
+            "DBIx::Class::InflateColumn::Serializer" : "0",
+            "JSON" : "0",
+            "strict" : "0",
+            "warnings" : "0"
          }
       }
    },

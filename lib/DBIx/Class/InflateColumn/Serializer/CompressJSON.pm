@@ -6,7 +6,7 @@
 #
 package DBIx::Class::InflateColumn::Serializer::CompressJSON;
 {
-  $DBIx::Class::InflateColumn::Serializer::CompressJSON::VERSION = '0.003';
+  $DBIx::Class::InflateColumn::Serializer::CompressJSON::VERSION = '0.004';
 }
 
 # ABSTRACT: DBIx::Class::InflateColumn::Serializer::CompressJSON - JSON compressed Inflator
